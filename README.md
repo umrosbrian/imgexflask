@@ -1,0 +1,3 @@
+I'm attempting to make my entire website a Flask app.
+
+[This post](https://john-b-yang.github.io/flask-website/) introduced me to the use of Flask FlatPages, wherein Flask serves files in a manner that you don't need to use url_for to address every file.  This makes serving static files really easy.  The main motivation for doing this is to have site-wide authentication handled by Flask since I've discovered NGINX's basic authentication to be a little problematic.

@@ -1,0 +1,95 @@
+h1 {
+    font-size: 30px;
+    margin-left: 5px
+}
+
+h2 {
+    font-size: 26px;
+    margin-left: 15px
+}
+h3 {
+    font-size: 22px;
+    margin-left: 25px
+}
+h4 {
+    font-size: 18px;
+    margin-left: 35px
+}
+h5 {
+    font-size: 14px;
+    margin-left: 45px
+}
+body {
+    background: #e7e7e7; /*Make background a light silver color.  Go to https://colors-picker.com/hex-color-picker/ if you want to pick another color.*/
+}
+table, th, td {
+    border: 1px solid black; /*add border around all data*/
+    /*border-collapse: collapse;*/
+    text-align: center; /*center the data within the cell*/
+}
+/*Center tables.  This is the same as adding `align='center'` in a table opening tag.*/
+table { 
+    margin-right: auto;
+    margin-left: auto;
+}
+/*center images*/
+img {
+    display: block;
+    margin: 0 auto;
+}
+p {
+    margin-left: 60px
+}
+
+.highlight {margin-left: 120px} /*This will be applied to all Python-Markdown code blocks and in-line code using the InlineHilite PyMdown Extension.  Because I haven't had much luck with the later, I'm disabling it.*/
+
+/*Center both the image and caption text of an image having a caption*/
+div.figure {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  word-wrap: break-word;   
+}
+
+/*Put images with captions side by side.  Found this at https://codeconvey.com/simple-css-image-gallery-with-captions/ and whittled it down a little.*/
+.wrapper {
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.grid {
+  margin: 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.grid-item {
+  min-width: 250px; /*each image will be scalled to 250px in width*/
+  max-width: 250px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 250px;
+          flex: 1 1 250px;
+  padding-left: .5rem;
+  padding-right: .5rem;
+  margin-bottom: 1rem;
+}
+
+.grid-item figure {
+  padding: 0;
+  margin: 0;
+}
+
+.grid-item figure img {
+  display: block;
+  max-width: 100%;
+}
+.grid-item figcaption {
+  display: block;
+  padding: .625rem .5rem;
+}
