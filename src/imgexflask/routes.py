@@ -1,6 +1,6 @@
 import logging
 from imgexflask import app
-from flask import render_template, request, session
+from flask import render_template, request, session, send_from_directory
 from flask_flatpages import FlatPages
 from werkzeug.security import check_password_hash
 import datetime as dt
@@ -8,16 +8,17 @@ import os
 
 
 current_time = dt.datetime.now().strftime('%Y%m%d_%H%M%S')
-log_file_aps = os.path.join(os.path.dirname(os.path.dirname(app.instance_path)), 'logs', f"{current_time}.log")
+log_file_aps = os.path.join(os.path.dirname(os.path.dirname(app.root_path)), 'logs', f"{current_time}.log")
 logging.basicConfig(filename=log_file_aps,
                     filemode='w',
                     level=logging.DEBUG,
                     format='%(levelname)s-%(asctime)s-%(funcName)s - %(message)s')
 
+
 # Files having this extension will be the only ones that are returned from the 'pages' directory.
 FLATPAGES_EXTENSION = '.php'
 # This is relative to the app root, which is within the package directory.
-FLATPAGES_ROOT = os.path.join(os.pardir, os.pardir, os.pardir, 'pages')
+FLATPAGES_ROOT = os.path.join(os.path.dirname(app.root_path), 'pages')
 
 # This is somehow setting the path to the 'pages' directory.  Don't see anything in app.config that's changed.
 app.config.from_object(__name__)
@@ -25,6 +26,9 @@ pages = FlatPages(app)
 
 # I think this is needed for request...it's not just a WTF thing
 app.config["SECRET_KEY"] = 'e^Px\9]D@g*"*`^:+4+T'
+
+app.config['DOWNLOAD_DIR'] = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(app.root_path))), 'download')
+print(f"app.config['DOWNLOAD_DIR']: {app.config['DOWNLOAD_DIR']}")
 
 
 @app.route('/')
@@ -70,10 +74,11 @@ def do_admin_login():
     # comparison.  We need to use check_password_hash().
     if provided_uname == 'admin' and check_password_hash(hashed_pword, provided_pword):
         session['logged_in'] = True
-        logging.debug(f"{provided_uname} logged in")
+        logging.debug(f"User '{provided_uname}' logged in.")
+        return render_template('index.html')
     else:
-        logging.warning(f"User {provided_uname} attempted to log in with password {provided_pword}.")
-    return render_template('index.html')
+        logging.warning(f"User '{provided_uname}' attempted to log in with password '{provided_pword}'.")
+        return render_template('login.html')
 
 
 @app.route("/logout")
@@ -92,3 +97,10 @@ def page(path):
         return render_template("page.html", page=page)
     else:
         return render_template('login.html')
+
+
+# Download file in 'download' directory.
+@app.route('/download/<path:filename>', methods=['GET', 'POST'])
+def download(filename):
+    # path_to_ = os.path.join(app.root_path, app.config['DOWNLOAD_DIR'])
+    return send_from_directory(directory=app.config['DOWNLOAD_DIR'], path=filename)

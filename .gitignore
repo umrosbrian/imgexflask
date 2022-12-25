@@ -1,4 +1,4 @@
 .idea
 build
 src/imgexflask.egg-info
-logs/*
+logs
