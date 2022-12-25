@@ -17,7 +17,7 @@ logging.basicConfig(filename=log_file_aps,
 
 # Files having this extension will be the only ones that are returned from the 'pages' directory.
 FLATPAGES_EXTENSION = '.php'
-# This is relative to the app root, which is within the package directory.
+# Directory containing the files that will be rendered with page().
 FLATPAGES_ROOT = os.path.join(os.path.dirname(app.root_path), 'pages')
 
 # This is somehow setting the path to the 'pages' directory.  Don't see anything in app.config that's changed.
@@ -38,17 +38,7 @@ def home():
     if not session.get('logged_in'):
         return render_template('login.html')
     else:
-        # Articles are pages with a publication date
-        articles = (p for p in pages if 'published' in p.meta)
-        print(f"p in pages: {[p for p in pages]}")
-        print(f"p.meta in pages: {[p.meta for p in pages]}")
-
-        # Show the 10 most recent articles, most recent first.
-        latest = sorted(articles, reverse=True,
-                        key=lambda p: p.meta['published'])
-
-        print (latest)
-        return render_template('index.html', articles=latest[:10])
+        return render_template('index.html')
 
 
 # I found that if I put in the URL for index after logging out the template would be rendered.  This prevents that \
@@ -67,17 +57,17 @@ def login_get():
 # https://pythonspot.com/login-authentication-with-flask/ for this method of the form & session method of authentication
 @app.route('/login', methods=['POST'])
 def do_admin_login():
-    provided_uname = request.form['username']
-    provided_pword = request.form['password']
-    hashed_pword = 'sha256$qy5yj2dnBfKzDSzy$97b4acbbd4d593bb299efbc73e2c5a1c0a8382693a243b868f2466ca817067e3'
-    # The hash of the provided password when correct will be different every time so we can't use a simple string \
+    provided_username = request.form['username']
+    provided_password = request.form['password']
+    hashed_password = 'sha256$qy5yj2dnBfKzDSzy$97b4acbbd4d593bb299efbc73e2c5a1c0a8382693a243b868f2466ca817067e3'
+    # The hash of the provided password when correct will be different every time, so we can't use a simple string \
     # comparison.  We need to use check_password_hash().
-    if provided_uname == 'admin' and check_password_hash(hashed_pword, provided_pword):
+    if provided_username == 'admin' and check_password_hash(hashed_password, provided_password):
         session['logged_in'] = True
-        logging.debug(f"User '{provided_uname}' logged in.")
+        logging.debug(f"User '{provided_username}' logged in.")
         return render_template('index.html')
     else:
-        logging.warning(f"User '{provided_uname}' attempted to log in with password '{provided_pword}'.")
+        logging.warning(f"User '{provided_username}' attempted to log in with password '{provided_password}'.")
         return render_template('login.html')
 
 
@@ -100,7 +90,7 @@ def page(path):
 
 
 # Download file in 'download' directory.
-@app.route('/download/<path:filename>', methods=['GET', 'POST'])
+@app.route('/download/<path:filename>')
 def download(filename):
     # path_to_ = os.path.join(app.root_path, app.config['DOWNLOAD_DIR'])
     return send_from_directory(directory=app.config['DOWNLOAD_DIR'], path=filename)
