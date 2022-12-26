@@ -18,7 +18,7 @@ logging.basicConfig(filename=log_file_aps,
 # Files having this extension will be the only ones that are returned from the 'pages' directory.
 FLATPAGES_EXTENSION = '.php'
 # Directory containing the files that will be rendered with page().
-FLATPAGES_ROOT = os.path.join(os.path.dirname(app.root_path), 'pages')
+FLATPAGES_ROOT = os.path.join(os.path.dirname(os.path.dirname(app.root_path)), 'pages')
 logging.debug(f"FLATPAGES_ROOT: {FLATPAGES_ROOT}")
 
 # This is somehow setting the path to the 'pages' directory.  Don't see anything in app.config that's changed.
