@@ -19,6 +19,7 @@ logging.basicConfig(filename=log_file_aps,
 FLATPAGES_EXTENSION = '.php'
 # Directory containing the files that will be rendered with page().
 FLATPAGES_ROOT = os.path.join(os.path.dirname(app.root_path), 'pages')
+logging.debug(f"FLATPAGES_ROOT: {FLATPAGES_ROOT}")
 
 # This is somehow setting the path to the 'pages' directory.  Don't see anything in app.config that's changed.
 app.config.from_object(__name__)
@@ -28,7 +29,7 @@ pages = FlatPages(app)
 app.config["SECRET_KEY"] = 'e^Px\9]D@g*"*`^:+4+T'
 
 app.config['DOWNLOAD_DIR'] = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(app.root_path))), 'download')
-print(f"app.config['DOWNLOAD_DIR']: {app.config['DOWNLOAD_DIR']}")
+logging.debug(f"app.config['DOWNLOAD_DIR']: {app.config['DOWNLOAD_DIR']}")
 
 
 @app.route('/')
@@ -84,6 +85,7 @@ def logout():
 def page(path):
     if session['logged_in']:
         page = pages.get_or_404(path)
+        logging.debug(f"page({path}) called.  Rendering {page} via page.html.")
         return render_template("page.html", page=page)
     else:
         return render_template('login.html')
