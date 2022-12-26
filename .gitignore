@@ -2,3 +2,5 @@
 build
 src/imgexflask.egg-info
 logs
+__pycache__
+src/imgexflask/__pycache__
