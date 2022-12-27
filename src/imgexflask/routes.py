@@ -35,9 +35,11 @@ logging.debug(f"app.config['DOWNLOAD_DIR']: {app.config['DOWNLOAD_DIR']}")
 @app.route('/')
 @app.route('/index')
 def home():
-    # Don't know why I can't use session['logged_in'].
+    # The session object may not have the key 'logged_in' yet so we use .get to avoid a KeyError if it doesn't.
     if not session.get('logged_in'):
-        return render_template('login.html')
+        session['logged_in'] = True  # added for troubleshooting
+        return render_template('index.html')  # added for troubleshooting
+         # return render_template('login.html')
     else:
         return render_template('index.html')
 
