@@ -102,4 +102,17 @@ def page(path):
 @app.route('/download/<path:filename>')
 def download(filename):
     # path_to_ = os.path.join(app.root_path, app.config['DOWNLOAD_DIR'])
+    logging.debug("Downloading setup.cfg")
     return send_from_directory(directory=app.config['DOWNLOAD_DIR'], path=filename)
+
+
+@app.route('/private_template')
+def private_template():
+    logging.debug("rendering private_template.html")
+    return render_template('private_template.html')
+
+
+@app.route('/index_copy')
+def index_copy():
+    logging.debug("rendering index_copy.html")
+    return render_template('index_copy.html')
