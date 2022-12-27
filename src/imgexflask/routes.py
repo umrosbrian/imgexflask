@@ -37,10 +37,14 @@ logging.debug(f"app.config['DOWNLOAD_DIR']: {app.config['DOWNLOAD_DIR']}")
 def home():
     # The session object may not have the key 'logged_in' yet so we use .get to avoid a KeyError if it doesn't.
     if not session.get('logged_in'):
+        logging.debug(f"The 'logged_in' key wasn't present when home() was issued.  Setting it to True and rendering"
+                      f"index.html")
         session['logged_in'] = True  # added for troubleshooting
         return render_template('index.html')  # added for troubleshooting
          # return render_template('login.html')
     else:
+        logging.debug(f"The 'logged_in' key was found when home() was issued.  It current value is "
+                      f"{session['logged_in']}.  Setting it to True and rendering index.html")
         session['logged_in'] = True  # added for troubleshooting
         return render_template('index.html')
 
