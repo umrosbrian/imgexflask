@@ -41,6 +41,7 @@ def home():
         return render_template('index.html')  # added for troubleshooting
          # return render_template('login.html')
     else:
+        session['logged_in'] = True  # added for troubleshooting
         return render_template('index.html')
 
 
