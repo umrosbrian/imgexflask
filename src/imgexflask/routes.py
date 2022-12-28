@@ -41,13 +41,10 @@ def home():
     if not session.get('logged_in'):
         logging.debug(f"The 'logged_in' key wasn't present when home() was issued.  Setting it to True and rendering"
                       f"index.html")
-        session['logged_in'] = True  # added for troubleshooting
-        return render_template('index.html')  # added for troubleshooting
-         # return render_template('login.html')
+        return render_template('login.html')
     else:
         logging.debug(f"The 'logged_in' key was found when home() was issued.  It current value is "
                       f"{session['logged_in']}.  Setting it to True and rendering index.html")
-        session['logged_in'] = True  # added for troubleshooting
         return render_template('index.html')
 
 
@@ -107,15 +104,3 @@ def download(filename):
     # path_to_ = os.path.join(app.root_path, app.config['DOWNLOAD_DIR'])
     logging.debug("Downloading setup.cfg")
     return send_from_directory(directory=app.config['DOWNLOAD_DIR'], path=filename)
-
-
-@app.route('/private_template')
-def private_template():
-    logging.debug("rendering private_template.html")
-    return render_template('private_template.html')
-
-
-@app.route('/index_copy')
-def index_copy():
-    logging.debug("rendering index_copy.html")
-    return render_template('index_copy.html')
