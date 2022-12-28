@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href="a2hosting">a2hosting</a><br>
+<a href="{{ url_for('page', path='imgexch/imgexch') }}">Imaging Exchange</a><br>
+<p></p>
+Download:<br>
+<a href="{{ url_for('download', filename='setup.cfg') }}">setup</a><br>
+{% endblock content %}
+

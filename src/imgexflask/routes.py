@@ -21,6 +21,7 @@ FLATPAGES_EXTENSION = '.php'
 FLATPAGES_ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(app.root_path))), 'pages')
 logging.debug(f"FLATPAGES_ROOT: {FLATPAGES_ROOT}")
 logging.debug(f"os.listdir(FLATPAGES_ROOT): {os.listdir(FLATPAGES_ROOT)}")
+FLATPAGES_AUTO_RELOAD = True
 
 
 # This is somehow setting the path to the 'pages' directory.  Don't see anything in app.config that's changed.
@@ -40,12 +41,12 @@ def home():
     # The session object may not have the key 'logged_in' yet so we use .get to avoid a KeyError if it doesn't.
     if not session.get('logged_in'):
         logging.debug(f"The 'logged_in' key wasn't present when home() was issued.  Setting it to True and rendering"
-                      f"index.html")
+                      f"flask_index.html")
         return render_template('login.html')
     else:
         logging.debug(f"The 'logged_in' key was found when home() was issued.  It current value is "
-                      f"{session['logged_in']}.  Setting it to True and rendering index.html")
-        return render_template('index.html')
+                      f"{session['logged_in']}.  Setting it to True and rendering flask_index.html")
+        return render_template('flask_index.html')
 
 
 # I found that if I put in the URL for index after logging out the template would be rendered.  This prevents that \
@@ -53,7 +54,7 @@ def home():
 @app.route('/login')
 def login_get():
     if session['logged_in']:
-        return render_template('index.html')
+        return render_template('flask_index.html')
     else:
         return render_template('login.html')
 
@@ -72,7 +73,7 @@ def do_admin_login():
     if provided_username == 'admin' and check_password_hash(hashed_password, provided_password):
         session['logged_in'] = True
         logging.debug(f"User '{provided_username}' logged in.")
-        return render_template('index.html')
+        return render_template('flask_index.html')
     else:
         logging.warning(f"User '{provided_username}' attempted to log in with password '{provided_password}'.")
         return render_template('login.html')
@@ -92,7 +93,6 @@ def page(path):
     if session['logged_in']:
         page = pages.get_or_404(path)
         logging.debug(f"page({path}) called.  Rendering {page} via page.html.")
-        #return render_template('index.html')
         return render_template("page.html", page=page)
     else:
         return render_template('login.html')
