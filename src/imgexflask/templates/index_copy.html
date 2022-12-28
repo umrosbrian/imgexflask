@@ -1,9 +1,0 @@
-{% extends "base.html" %}
-
-{% block content %}
-<a href="private">private</a><br>
-<a href="{{ url_for('download', filename='setup.cfg') }}">setup</a><br>
-<a href="{{ url_for('page', path='private') }}">private</a><br>
-<a href="{{ url_for('private_template') }}">private_template</a><br>
-{% endblock content %}
-
